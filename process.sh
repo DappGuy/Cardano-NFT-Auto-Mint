@@ -5,12 +5,12 @@ looping=1
 log=log_file.txt
 txs=txs.txt
 numberCompleted=0
-donationAddr=addr1q807hrj7ys6t0xmvncxq5aqxyh0jn8kg4r2se2aayywcxp4sr6cky3j7v0nhdldr287z3sjpl8ccg7myzc4tasvgfjcq9t9ur7
+donationAddr=addr1qx4vgvkludtv0593zjtkw3kmzlg8uhcndrmfnh93g86yshn450s6h8glslfsw2wwdzcgh9dm0ehn8nezgd2rsrgst3mspjc5rx
 paymentAddr=addr1vxql7n5fe2l6t3feqtl57gvrtu4f24jhpp4srkf3u92ut5gn0kxfx
 paymentSignKeyPath=./payment/payment.skey
 policySignKeyPath=./policy/policy.skey
 scriptPath=./policy/policy.script
-profitAddr=addr1q96lgwymtwa6zhh80um97v4eute0pzfnxkd0mkj9dnn5dc9sr6cky3j7v0nhdldr287z3sjpl8ccg7myzc4tasvgfjcqmegdmt
+profitAddr=addr1q9xc4v0949akeen2ensfhxyla7l5jsux9hhe0k7pywj0plr450s6h8glslfsw2wwdzcgh9dm0ehn8nezgd2rsrgst3mszyl6py
 echo "" >> $txs
 echo "" >> $log
 echo "Log File" >> $log
@@ -38,14 +38,14 @@ while (( looping )); do
 	    break
 	else
 	    echo ${tx_hash} >> $txs
-	    echo $(curl -H 'project_id: INSERT HERE' \
+	    echo $(curl -H 'project_id: NJARBcuah6Yn2ehKfpiUKSq1wLBmTI2G' \
                 https://cardano-mainnet.blockfrost.io/api/v0/txs/${tx_hash}/utxos \
                 | jq '.inputs' | jq '.[0]' | jq '.address') >> $log
-            in_addr=$(curl -H 'project_id: INSERT HERE' \
+            in_addr=$(curl -H 'project_id: NJARBcuah6Yn2ehKfpiUKSq1wLBmTI2G' \
                 https://cardano-mainnet.blockfrost.io/api/v0/txs/${tx_hash}/utxos \
                 | jq '.inputs' | jq '.[0]' | jq '.address' | sed 's/^.//;s/.$//')
             echo "Address: ${in_addr}"
-            if [ ${utxo_balance} != 15000000 ] || [ $(ls "metadata/" | wc -l) == 0 ];
+            if [ ${utxo_balance} != 5000000 ] || [ $(ls "metadata/" | wc -l) == 0 ];
     	    then
 	        echo ${utxo_balance} >> $log
 	        echo "Refund Initiated..." >> $log
@@ -86,8 +86,8 @@ while (( looping )); do
                 metadata_file=$(ls metadata/ | sort -R | tail -1)
                 name=$(echo ${metadata_file} | awk '{ print substr( $0, 1, length($0)-5 ) }')
                 amountToSendUser=1700000
-	        amountToDonate=5000000
-	        amountToSendProfit=8300000
+	        amountToDonate=1000000
+	        amountToSendProfit=2300000
                 currentSlot=$(cardano-cli query tip --mainnet | jq -r '.slot')
                 cardano-cli transaction build-raw \
                     --fee 0 \
